@@ -19,20 +19,23 @@ namespace DG
 		}
 		Main mainmenu;
 		GameScript gameScript;
+		Location location;
 		protected override void Initialize()
 		{
 			mainmenu = new Main();
 			gameScript = new GameScript();
+			location = new Location();
 			Utils.GraphicsDevice = _graphics.GraphicsDevice;
 			Utils.Content = Content;
 			_graphics.PreferredBackBufferHeight = 1080;
 			_graphics.PreferredBackBufferWidth = 1920;
 			AppWindow.Update(
-				_graphics.PreferredBackBufferHeight,
-				_graphics.PreferredBackBufferWidth
+				_graphics.PreferredBackBufferWidth,
+				_graphics.PreferredBackBufferHeight
 			);
 			mainmenu.IsEnabled = EnabledState.Disabled;
 			Utils.Scripts.Add(mainmenu);
+			Utils.Scripts.Add(location);
 			Utils.Scripts.Add(gameScript);
 			foreach (var item in Utils.Scripts)
 				item.Initialize();
@@ -74,8 +77,8 @@ namespace DG
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
-			_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+			GraphicsDevice.Clear(new Color(34, 34, 34));
+			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
 			foreach (var item in Utils.Scripts)
 				if (item.IsEnabled == EnabledState.Enabled ||
 					item.IsEnabled == EnabledState.Default)
