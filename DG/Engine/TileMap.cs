@@ -14,7 +14,7 @@ namespace DG
         public Texture2D Texture;
         public int Width = 120;
         public int Height = 120;
-        public Vector2 TileSize = new Vector2(16, 16);
+        public Vector2 TileSize = new Vector2(32, 32);
         public Point Position = Point.Zero;
 
         Dictionary<char, Vector2> tileDictionary = new Dictionary<char, Vector2>();
@@ -36,11 +36,18 @@ namespace DG
         public void AddTile(char i, Vector2 pos)
         {
             tileDictionary.Add(i, pos);
-
+        }
+        public void AddTile(int i, Vector2 pos)
+        {
+            tileDictionary.Add((char)i, pos);
         }
         public void SetTiles(char i, Vector2 pos)
         {
             tiles[(int)pos.X, (int)pos.Y] = i;
+        }
+        public void SetTiles(int i, Vector2 pos)
+        {
+            tiles[(int)pos.X, (int)pos.Y] = (char)i;
         }
 
         public void Draw()

@@ -10,6 +10,7 @@ namespace DG.Engine
 {
 	static public class Utils
 	{
+		public static int ItemID = 0;
 		public static List<Drawable> Scripts = new List<Drawable>();
 		public static GraphicsDevice GraphicsDevice;
 		public static ContentManager Content;
@@ -38,7 +39,7 @@ namespace DG.Engine
 	}
 	static public class Settings
 	{
-		static public WindowType WindowType = WindowType.Default;
+		static public WindowType WindowType = WindowType.Borderless;
 		static public bool IsUpdated = false;
 	}
 }
