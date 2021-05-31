@@ -77,7 +77,8 @@ namespace DG
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(new Color(34, 34, 34));
+			GraphicsDevice.Clear(Color.AliceBlue);
+			//GraphicsDevice.Clear(new Color(34, 34, 34));
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
 			foreach (var item in Utils.Scripts)
 				if (item.IsEnabled == EnabledState.Enabled ||
