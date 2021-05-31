@@ -72,8 +72,7 @@ namespace DG.Scripts
 			for (int i = 0; i < 9; i++)
 				Props.SetTiles(i, new Vector2(i / 3 + x, i % 3 + y));
 		}
-
-		public void DrawWall(Rectangle rect)
+		public void DrawWall(Rectangle rect, bool stairs = true)
 		{
 			for (int y = rect.Y; y < rect.Y + rect.Height; y++)
 				for (int x = rect.X; x <= rect.X + rect.Width; x++)
@@ -92,13 +91,19 @@ namespace DG.Scripts
 			Wall.SetTiles(2, new Vector2(rect.X + rect.Width, rect.Y));
 			Wall.SetTiles(5, new Vector2(rect.X, rect.Y + rect.Height));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-				if (i != rect.X + rect.Width / 2)
-					Wall.SetTiles(6, new Vector2(i, rect.Y + rect.Height));
+			{
+				if (i == rect.X + rect.Width / 2 && stairs)
+					continue;
+				Wall.SetTiles(6, new Vector2(i, rect.Y + rect.Height));
+			}
 			Wall.SetTiles(7, new Vector2(rect.X + rect.Width, rect.Y + rect.Height));
 			Wall.SetTiles(8, new Vector2(rect.X, rect.Y + rect.Height + 1));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-				if (i != rect.X + rect.Width / 2)
-					Wall.SetTiles(9, new Vector2(i, rect.Y + rect.Height + 1));
+			{
+				if (i == rect.X + rect.Width / 2 && stairs)
+					continue;
+				Wall.SetTiles(9, new Vector2(i, rect.Y + rect.Height + 1));
+			}
 			Wall.SetTiles(10, new Vector2(rect.X + rect.Width, rect.Y + rect.Height + 1));
 
 		}
@@ -111,6 +116,18 @@ namespace DG.Scripts
 			Struct.SetTiles(4, new Vector2(x, y + 2));
 			Struct.SetTiles(5, new Vector2(x + 1, y + 2));
 		}
+
+		static private int LID = 0;
+		static public int LocationID
+		{
+			get => LID;
+			set
+			{
+				LevelChanged = true;
+				LID = value;
+			}
+		}
+		static public bool LevelChanged = true;
 		public override void Initialize()
 		{
 			random = new Random();
@@ -118,13 +135,28 @@ namespace DG.Scripts
 			InitWall();
 			InitProps();
 			InitStruct();
-
-			DrawWall(new Rectangle(5, 5, 20, 20)); 
-			DrawWall(new Rectangle(12, 3, 4, 5));
-
-			DrawPortal(13, 4);
-			DrawStaircase(14, 8);
 			//GameScript.Player.Position
+		}
+		public override void Update()
+		{
+			if (LevelChanged)
+			{
+				LevelChanged = false;
+				switch (LocationID)
+				{
+					case 0:
+						DrawWall(new Rectangle(5, 5, 20, 20), false);
+						DrawWall(new Rectangle(12, 3, 4, 5));
+						DrawPortal(13, 4);
+						DrawStaircase(14, 8);
+						break;
+					case 1:
+						DrawWall(new Rectangle(4, 5, 10, 10), false);
+						DrawWall(new Rectangle(5, 4, 5, 5));
+						DrawStaircase(7, 9);
+						break;
+				}
+			}
 		}
 		public override void Draw()
 		{

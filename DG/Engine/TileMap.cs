@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DG
 {
-    class TileMap
+    public class TileMap
     {
         public Vector2 Size = new Vector2(64, 64);
         public Texture2D Texture;
@@ -24,6 +24,11 @@ namespace DG
         {
             tiles = new char[Width, Height];
             tileDictionary.Add(' ', new Vector2(-1, -1));
+            ClearMap();
+        }
+
+        public void ClearMap()
+		{
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
@@ -32,7 +37,6 @@ namespace DG
                 }
             }
         }
-
         public void AddTile(char i, Vector2 pos)
         {
             tileDictionary.Add(i, pos);
@@ -49,6 +53,10 @@ namespace DG
         {
             tiles[(int)pos.X, (int)pos.Y] = (char)i;
         }
+        public int GetTile(Vector2 pos)
+		{
+            return tiles[(int)pos.X, (int)pos.Y];
+		}
 
         public void Draw()
         {
