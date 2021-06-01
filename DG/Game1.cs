@@ -3,11 +3,14 @@ using DG.Scripts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 
 namespace DG
 {
 	public class Game1 : Game
 	{
+		[DllImport("kernel32")]
+		static extern bool AllocConsole();
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
 
@@ -22,6 +25,7 @@ namespace DG
 		Location location;
 		protected override void Initialize()
 		{
+			AllocConsole();
 			mainmenu = new Main();
 			gameScript = new GameScript();
 			location = new Location();
@@ -77,7 +81,8 @@ namespace DG
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(new Color(34, 34, 34));
+			GraphicsDevice.Clear(Color.AliceBlue);
+			//GraphicsDevice.Clear(new Color(34, 34, 34));
 			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp);
 			foreach (var item in Utils.Scripts)
 				if (item.IsEnabled == EnabledState.Enabled ||

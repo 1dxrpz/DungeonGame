@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Xna.Framework.Input;
 
 namespace DG.Engine
 {
@@ -41,5 +42,9 @@ namespace DG.Engine
 	{
 		static public WindowType WindowType = WindowType.Borderless;
 		static public bool IsUpdated = false;
+	}
+	static public class Scene
+	{
+		static public List<Item> Items = new List<Item>();
 	}
 }

@@ -8,17 +8,30 @@ namespace DG.Engine
 {
 	public class Player : Entity
 	{
-		public Vector2 Velocity = new Vector2(100, 100);
 		public override void Update()
 		{
 			if (Keyboard.GetState().IsKeyDown(Keys.D))
-				Position.X += Velocity.X * Time.DeltaTime;
+			{
+				Velocity.X = Speed.X;
+				Mirrored = IsMirrored.NotMirrored;
+			} else
 			if (Keyboard.GetState().IsKeyDown(Keys.A))
-				Position.X -= Velocity.X * Time.DeltaTime;
+			{
+				Velocity.X = -Speed.X;
+				Mirrored = IsMirrored.Mirrored;
+			} else
+				Velocity.X = 0;
 			if (Keyboard.GetState().IsKeyDown(Keys.S))
-				Position.Y += Velocity.Y * Time.DeltaTime;
+			{
+				Velocity.Y = Speed.Y;
+			} else
 			if (Keyboard.GetState().IsKeyDown(Keys.W))
-				Position.Y -= Velocity.Y * Time.DeltaTime;
+			{
+				Velocity.Y = -Speed.Y;
+			} else
+				Velocity.Y = 0;
+
+			Position += Velocity * Time.DeltaTime;
 		}
 	}
 }
