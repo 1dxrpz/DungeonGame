@@ -76,7 +76,7 @@ namespace DG.Engine
 			}
 			if (IsDragging)
 				Position = Mouse.GetState().Position.ToVector2() - DraggingOffset;
-			if (IsOverlapping(new Rectangle(GameScript.Player.Position.ToPoint(), GameScript.Player.Size)))
+			if (IsOverlapping(new Rectangle(GameScript.Player.Position.ToPoint(), GameScript.Player.Size * GameScript.Player.Scale)))
 			{
 				if (!OverlappingObjects.Contains(this))
 					OverlappingObjects.Add(this);

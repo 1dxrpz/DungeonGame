@@ -9,9 +9,8 @@ namespace DG.Engine
 	{
 		public EnabledState IsEnabled = EnabledState.Default;
 		public virtual void Draw() { }
-
 		public virtual void Initialize() { }
-
 		public virtual void Update() { }
+		public virtual void Animate() { }
 	}
 }

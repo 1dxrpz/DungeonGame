@@ -43,5 +43,8 @@ namespace DG.Engine
 		static public WindowType WindowType = WindowType.Borderless;
 		static public bool IsUpdated = false;
 	}
-	
+	static public class Scene
+	{
+		static public List<Item> Items = new List<Item>();
+	}
 }

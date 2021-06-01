@@ -1,6 +1,7 @@
 ﻿using DG.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,9 +12,11 @@ namespace DG.Scripts
 	{
 		TileMap Grass;
 		static public TileMap Wall;
-		TileMap Props;
 		TileMap Struct;
 		Random random;
+
+		Entity Portal;
+
 		public void InitGrass()
 		{
 			Grass = new TileMap();
@@ -49,13 +52,6 @@ namespace DG.Scripts
 			Wall.AddTile(10, new Vector2(3, 4));
 			Wall.AddTile(11, new Vector2(2, 2));
 		}
-		public void InitProps()
-		{
-			Props = new TileMap();
-			Props.Texture = Utils.Content.Load<Texture2D>("TProps");
-			for (int i = 0; i < 9; i++)
-				Props.AddTile(i, new Vector2(11 + i / 3, i % 3 + 8));
-		}
 		public void InitStruct()
 		{
 			Struct = new TileMap();
@@ -69,8 +65,7 @@ namespace DG.Scripts
 		}
 		public void DrawPortal(int x, int y)
 		{
-			for (int i = 0; i < 9; i++)
-				Props.SetTiles(i, new Vector2(i / 3 + x, i % 3 + y));
+			Portal.Position = new Vector2(x, y);
 		}
 		public void DrawWall(Rectangle rect, bool stairs = true)
 		{
@@ -133,8 +128,10 @@ namespace DG.Scripts
 			random = new Random();
 			InitGrass();
 			InitWall();
-			InitProps();
 			InitStruct();
+			Portal = new Entity(Utils.Content.Load<Texture2D>("Props/Portal"));
+			Portal.Scale = new Point(2);
+			//Portal.Size = new Point(94, 32);
 			//GameScript.Player.Position
 		}
 		public override void Update()
@@ -146,13 +143,14 @@ namespace DG.Scripts
 				{
 					case 0:
 						DrawWall(new Rectangle(5, 5, 20, 20), false);
-						DrawWall(new Rectangle(12, 3, 4, 5));
-						DrawPortal(13, 4);
+						DrawWall(new Rectangle(12, 3, 5, 5));
+						DrawPortal(870, 300);
 						DrawStaircase(14, 8);
 						break;
 					case 1:
 						DrawWall(new Rectangle(4, 5, 10, 10), false);
 						DrawWall(new Rectangle(5, 4, 5, 5));
+						DrawPortal(420, 350);
 						DrawStaircase(7, 9);
 						break;
 				}
@@ -162,8 +160,8 @@ namespace DG.Scripts
 		{
 			Grass.Draw();
 			Wall.Draw();
-			Props.Draw();
 			Struct.Draw();
+			Portal.Draw();
 		}
 	}
 }
