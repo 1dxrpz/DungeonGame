@@ -1,6 +1,7 @@
 ﻿using DG.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,9 +12,11 @@ namespace DG.Scripts
 	{
 		TileMap Grass;
 		static public TileMap Wall;
-		TileMap Props;
 		TileMap Struct;
 		Random random;
+
+		Entity Portal;
+
 		public void InitGrass()
 		{
 			Grass = new TileMap();
@@ -49,13 +52,6 @@ namespace DG.Scripts
 			Wall.AddTile(10, new Vector2(3, 4));
 			Wall.AddTile(11, new Vector2(2, 2));
 		}
-		public void InitProps()
-		{
-			Props = new TileMap();
-			Props.Texture = Utils.Content.Load<Texture2D>("TProps");
-			for (int i = 0; i < 9; i++)
-				Props.AddTile(i, new Vector2(11 + i / 3, i % 3 + 8));
-		}
 		public void InitStruct()
 		{
 			Struct = new TileMap();
@@ -69,8 +65,7 @@ namespace DG.Scripts
 		}
 		public void DrawPortal(int x, int y)
 		{
-			for (int i = 0; i < 9; i++)
-				Props.SetTiles(i, new Vector2(i / 3 + x, i % 3 + y));
+			Portal.Position = new Vector2(x, y);
 		}
 		public void DrawWall(Rectangle rect, bool stairs = true)
 		{
@@ -91,21 +86,12 @@ namespace DG.Scripts
 			Wall.SetTiles(2, new Vector2(rect.X + rect.Width, rect.Y));
 			Wall.SetTiles(5, new Vector2(rect.X, rect.Y + rect.Height));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-			{
-				if (i == rect.X + rect.Width / 2 && stairs)
-					continue;
 				Wall.SetTiles(6, new Vector2(i, rect.Y + rect.Height));
-			}
 			Wall.SetTiles(7, new Vector2(rect.X + rect.Width, rect.Y + rect.Height));
 			Wall.SetTiles(8, new Vector2(rect.X, rect.Y + rect.Height + 1));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-			{
-				if (i == rect.X + rect.Width / 2 && stairs)
-					continue;
 				Wall.SetTiles(9, new Vector2(i, rect.Y + rect.Height + 1));
-			}
 			Wall.SetTiles(10, new Vector2(rect.X + rect.Width, rect.Y + rect.Height + 1));
-
 		}
 		public void DrawStaircase(int x, int y)
 		{
@@ -128,17 +114,20 @@ namespace DG.Scripts
 			}
 		}
 		static public bool LevelChanged = true;
+
 		public override void Initialize()
 		{
 			random = new Random();
 			InitGrass();
 			InitWall();
-			InitProps();
 			InitStruct();
-			//GameScript.Player.Position
+			Portal = new Entity(Utils.Content.Load<Texture2D>("Props/Portal"));
+			Portal.Scale = new Point(2);
+			Portal.OnFloor = true;
 		}
 		public override void Update()
 		{
+			
 			if (LevelChanged)
 			{
 				LevelChanged = false;
@@ -146,13 +135,14 @@ namespace DG.Scripts
 				{
 					case 0:
 						DrawWall(new Rectangle(5, 5, 20, 20), false);
-						DrawWall(new Rectangle(12, 3, 4, 5));
-						DrawPortal(13, 4);
+						DrawWall(new Rectangle(12, 3, 5, 5));
+						DrawPortal(870, 300);
 						DrawStaircase(14, 8);
 						break;
 					case 1:
 						DrawWall(new Rectangle(4, 5, 10, 10), false);
 						DrawWall(new Rectangle(5, 4, 5, 5));
+						DrawPortal(420, 350);
 						DrawStaircase(7, 9);
 						break;
 				}
@@ -162,8 +152,8 @@ namespace DG.Scripts
 		{
 			Grass.Draw();
 			Wall.Draw();
-			Props.Draw();
 			Struct.Draw();
+			Portal.Draw();
 		}
 	}
 }

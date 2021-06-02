@@ -16,4 +16,10 @@ namespace DG.Engine
 		Fullscreen,
 		Default
 	}
+	public enum IsMirrored
+	{
+		Mirrored,
+		NotMirrored,
+		Default
+	}
 }

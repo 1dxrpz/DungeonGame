@@ -3,11 +3,14 @@ using DG.Scripts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.InteropServices;
 
 namespace DG
 {
 	public class Game1 : Game
 	{
+		[DllImport("kernel32")]
+		static extern bool AllocConsole();
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
 
@@ -22,6 +25,7 @@ namespace DG
 		Location location;
 		protected override void Initialize()
 		{
+			AllocConsole();
 			mainmenu = new Main();
 			gameScript = new GameScript();
 			location = new Location();
