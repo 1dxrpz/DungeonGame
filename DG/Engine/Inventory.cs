@@ -76,7 +76,7 @@ namespace DG.Engine
 			}
 			if (IsDragging)
 				Position = Mouse.GetState().Position.ToVector2() - DraggingOffset;
-			if (IsOverlapping(new Rectangle(GameScript.Player.Position.ToPoint(), GameScript.Player.Size * GameScript.Player.Scale)))
+			if (IsOverlapping(new Rectangle(GameScript.Player.CollisionMask.Position.ToPoint(), GameScript.Player.CollisionMask.Size)))
 			{
 				if (!OverlappingObjects.Contains(this))
 					OverlappingObjects.Add(this);
@@ -98,19 +98,12 @@ namespace DG.Engine
 			if (Keyboard.GetState().IsKeyUp(Keys.E) && Item.KeyPressed)
 				KeyPressed = false;
 		}
-		private Texture2D Tooltip = Utils.CreateDefaultTexture(new Color(34, 35, 36));
-		SpriteFont font = Utils.Content.Load<SpriteFont>("font");
 		public override void Draw()
 		{
 			if (IsVisible)
 			{
 				if (!InInventory)
 					Utils.SpriteBatch.Draw(Texture, new Rectangle((Position - Camera.Position).ToPoint(), Size), Color.White);
-				else if (IsHover && !IsDragging)
-				{
-					Utils.SpriteBatch.Draw(Tooltip, new Rectangle(Mouse.GetState().Position - new Point(-20, 10), new Point(150, 24)), Color.White);
-					Utils.SpriteBatch.DrawString(font, Name, Mouse.GetState().Position.ToVector2() - new Vector2(-25, 5), Color.Gold);
-				}
 			}
 		}
 	}
@@ -130,6 +123,8 @@ namespace DG.Engine
 				Mouse.GetState().Position.Y < Position.Y + Size.Y * (FrameSize.Y + offset.Y) &&
 				Mouse.GetState().Position.Y > Position.Y;
 		}
+		private Texture2D Tooltip = Utils.CreateDefaultTexture(new Color(34, 35, 36));
+		SpriteFont font = Utils.Content.Load<SpriteFont>("font");
 		public override void Update()
 		{
 			for (int i = 0; i < Items.Count; i++)
@@ -181,13 +176,18 @@ namespace DG.Engine
 					for (int x = 0; x < Size.X; x++)
 					{
 						Utils.SpriteBatch.Draw(Texture,
-						new Rectangle(Position.ToPoint() + new Point(x, y) * (FrameSize + offset), FrameSize
-						), Color.White);
+						new Rectangle(Position.ToPoint() + new Point(x, y) * (FrameSize + offset), FrameSize),
+						Color.White);
 					}
 				}
 				for (int i = 0; i < Items.Count; i++)
 				{
 					Utils.SpriteBatch.Draw(Items[i].Texture, new Rectangle((Items[i].Position).ToPoint(), Items[i].Size), Color.White);
+					if (!Items[i].IsDragging && Items[i].IsHover)
+					{
+						Utils.SpriteBatch.Draw(Tooltip, new Rectangle(Mouse.GetState().Position - new Point(-20, 10), new Point(150, 24)), Color.White);
+						Utils.SpriteBatch.DrawString(font, Items[i].Name, Mouse.GetState().Position.ToVector2() - new Vector2(-25, 5), Color.Gold);
+					}
 				}
 			}
 		}

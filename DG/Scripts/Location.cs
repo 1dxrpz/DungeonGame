@@ -86,21 +86,12 @@ namespace DG.Scripts
 			Wall.SetTiles(2, new Vector2(rect.X + rect.Width, rect.Y));
 			Wall.SetTiles(5, new Vector2(rect.X, rect.Y + rect.Height));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-			{
-				if (i == rect.X + rect.Width / 2 && stairs)
-					continue;
 				Wall.SetTiles(6, new Vector2(i, rect.Y + rect.Height));
-			}
 			Wall.SetTiles(7, new Vector2(rect.X + rect.Width, rect.Y + rect.Height));
 			Wall.SetTiles(8, new Vector2(rect.X, rect.Y + rect.Height + 1));
 			for (int i = rect.X + 1; i < rect.X + rect.Width; i++)
-			{
-				if (i == rect.X + rect.Width / 2 && stairs)
-					continue;
 				Wall.SetTiles(9, new Vector2(i, rect.Y + rect.Height + 1));
-			}
 			Wall.SetTiles(10, new Vector2(rect.X + rect.Width, rect.Y + rect.Height + 1));
-
 		}
 		public void DrawStaircase(int x, int y)
 		{
@@ -123,6 +114,7 @@ namespace DG.Scripts
 			}
 		}
 		static public bool LevelChanged = true;
+
 		public override void Initialize()
 		{
 			random = new Random();
@@ -131,11 +123,11 @@ namespace DG.Scripts
 			InitStruct();
 			Portal = new Entity(Utils.Content.Load<Texture2D>("Props/Portal"));
 			Portal.Scale = new Point(2);
-			//Portal.Size = new Point(94, 32);
-			//GameScript.Player.Position
+			Portal.OnFloor = true;
 		}
 		public override void Update()
 		{
+			
 			if (LevelChanged)
 			{
 				LevelChanged = false;

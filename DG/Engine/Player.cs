@@ -30,8 +30,6 @@ namespace DG.Engine
 				Velocity.Y = -Speed.Y;
 			} else
 				Velocity.Y = 0;
-
-			Position += Velocity * Time.DeltaTime;
 		}
 	}
 }
