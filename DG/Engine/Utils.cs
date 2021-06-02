@@ -13,6 +13,7 @@ namespace DG.Engine
 	{
 		public static int ItemID = 0;
 		public static List<Drawable> Scripts = new List<Drawable>();
+		public static List<Entity> Entities = new List<Entity>();
 		public static GraphicsDevice GraphicsDevice;
 		public static ContentManager Content;
 		public static SpriteBatch SpriteBatch;
